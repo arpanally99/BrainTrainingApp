@@ -1,0 +1,245 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .progress {
+  --circle-size: 8rem;
+  --base-color: hsl(0 0% 100%);
+  --border-size: 0.75rem;
+  --shadow: 0.25rem 0.25rem .5rem hsl(0 0% 0% / .3);
+  --hue-min: -20;
+  --hue-max: 120;
+  --duration: 1.5s;
+  
+  box-sizing: border-box;
+  width: var(--circle-size);
+  aspect-ratio: 1;
+  display: inline-grid;
+  place-items: center;
+  
+  border-radius: 50%;
+  border: var(--border-size) solid var(--base-color);
+  box-shadow: var(--shadow), inset var(--shadow);
+  
+  --fill: hsl(calc(var(--hue-min) + (var(--hue-max) - var(--hue-min)) * var(--perc)) 100% 50%);
+  background-image: linear-gradient(#fff0 50%, var(--fill) 0);
+  background-size: 100% 200%;
+  background-repeat: no-repeat;
+  background-position: 0 calc(100% * var(--perc));
+  background-clip: padding-box;
+  
+  position: relative;
+  isolation: isolate;
+  animation: fill calc(var(--duration) * var(--perc)) ease-out forwards
+}
+@keyframes fill {
+  from { background-position: 0 0 }
+}
+.progress::after{
+  content: "";
+  position: absolute;
+  background-color: var(--base-color);
+  inset: 25%;
+  border-radius: inherit;
+  z-index: -1;
+  box-shadow: var(--shadow)
+}
+
+/* body {
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  font-family: system-ui, sans-serif;
+  background-color: hsl(0 0% 95%);
+} */
+
+</style>
+
+<div class="content">
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-5 col-md-4">
+              <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-globe text-warning"></i>
+              </div>
+            </div>
+            <div class="col-7 col-md-8">
+              <div class="numbers">
+                <p class="card-category">Total answers</p>
+                <p class="card-title">{{user_games}}<p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="fa fa-refresh"></i>
+            Updated Now
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-5 col-md-4">
+              <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-money-coins text-success"></i>
+              </div>
+            </div>
+            <div class="col-7 col-md-8">
+              <div class="numbers">
+                <p class="card-category">Total Score</p>
+                <p class="card-title">{{user_progress.score}}<p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="fa fa-refresh"></i>
+            updated now
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-5 col-md-4">
+              <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-watch-time text-danger"></i>
+              </div>
+            </div>
+            <div class="col-7 col-md-8">
+              <div class="numbers">
+                <p class="card-category">Answer Time</p>
+                <p class="card-title">{{average_time_taken}}<p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="fa fa-clock-o"></i>
+            Seconds
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-body ">
+          <div class="row">
+            <div class="col-5 col-md-4">
+              <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-check-2 text-primary"></i>
+              </div>
+            </div>
+            <div class="col-7 col-md-8">
+              <div class="numbers">
+                <p class="card-category">Answers</p>
+                <p class="card-title">+{{user_progress.total_correct_answers}}<p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="fa fa-check"></i>
+           Total correct answers
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+          <h5 class="card-title">Your interactions</h5>
+          <p class="card-category">Puzzle & Quiz Question Ratio</p>
+        </div>
+        <div class="card-body ">
+          <canvas id=chartHours width="400" height="100"></canvas>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="fa fa-history"></i> Updated just now
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card ">
+        <div class="card-header ">
+          <h5 class="card-title">What you played</h5>
+          <p class="card-category">Category wise performance</p>
+        </div>
+        <div class="card-body ">
+          <canvas id="chartEmail"></canvas>
+        </div>
+        <div class="card-footer ">
+          <div class="hidden_inputs">
+            <input hidden name="science" value="{{data.science}}">
+            <input hidden name="math" value="{{data.math}}">
+            <input hidden name="geography" value="{{data.geography}}">
+            <input hidden name="iq" value="{{data.iq}}">
+            <input hidden name="sports" value="{{data.sports}}">
+            <input hidden name="time_taken" value="{{data.time_taken}}">
+            <input hidden name="quiz" value="{{data.quiz}}">
+            <input hidden name="puzzle" value="{{data.puzzle}}">
+
+
+          </div>
+          <div class="legend">
+            <i class="fa fa-circle text-primary"></i> Science
+            <i class="fa fa-circle text-warning"></i> Math
+            <i class="fa fa-circle text-danger"></i> Geography
+            <i class="fa fa-circle text-info"></i> IQ
+            <i class="fa fa-circle text-success"></i> Sports
+
+          </div>
+          <hr>
+          <div class="stats">
+            <i class="fa fa-calendar"></i> Updated just now
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card card-chart">
+        <div class="card-header">
+          <h5 class="card-title">Time Taken</h5>
+          <p class="card-category">Time Spent On Each question</p>
+        </div>
+        <div class="card-body">
+          <canvas id="speedChart" width="400" height="100"></canvas>
+        </div>
+        <div class="card-footer">
+          <hr />
+          <div class="card-stats">
+            <i class="fa fa-check"></i> Only correct answers
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Chart JS -->
+<script src="{% static 'dashboard/assets/js/plugins/chartjs.min.js' %}"></script>
+
+{% endblock %}

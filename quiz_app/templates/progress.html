@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    .progress {
+    --circle-size: 8rem;
+    --base-color: hsl(0 0% 100%);
+    --border-size: 0.75rem;
+    --shadow: 0.25rem 0.25rem .5rem hsl(0 0% 0% / .3);
+    --hue-min: -20;
+    --hue-max: 120;
+    --duration: 1.5s;
+    
+    box-sizing: border-box;
+    width: var(--circle-size);
+    aspect-ratio: 1;
+    display: inline-grid;
+    place-items: center;
+    
+    border-radius: 50%;
+    border: var(--border-size) solid var(--base-color);
+    box-shadow: var(--shadow), inset var(--shadow);
+    
+    --fill: hsl(calc(var(--hue-min) + (var(--hue-max) - var(--hue-min)) * var(--perc)) 100% 50%);
+    background-image: linear-gradient(#fff0 50%, var(--fill) 0);
+    background-size: 100% 200%;
+    background-repeat: no-repeat;
+    background-position: 0 calc(100% * var(--perc));
+    background-clip: padding-box;
+    
+    position: relative;
+    isolation: isolate;
+    animation: fill calc(var(--duration) * var(--perc)) ease-out forwards
+  }
+  @keyframes fill {
+    from { background-position: 0 0 }
+  }
+  .progress::after{
+    content: "";
+    position: absolute;
+    background-color: var(--base-color);
+    inset: 25%;
+    border-radius: inherit;
+    z-index: -1;
+    box-shadow: var(--shadow)
+  }
+  
+  /* body {
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    font-family: system-ui, sans-serif;
+    background-color: hsl(0 0% 95%);
+  } */
+
+  </style>
+  <div class="portfolio">
+    <h1>{{request.user.first_name}} {{request.user.last_name}}</h1>
+    <a href="mailto:{{request.user.email}}" target="_blank"><i class="	fab fa-telegram-plane"></i> {{request.user.email}}</a><br>
+    <hr>
+    <h2 style="color: blueviolet;">Total Score 🎉: {{progress.score}} </h2>
+    <h3 style="color: rgb(138, 146, 146);">Total answers: {{progress.total_answers}} Total correct answers: {{progress.total_correct_answers}}</h3>
+    <div class="progress" style="--perc: {{ratio}}">{% widthratio ratio 1 100 %}%</div>
+    <br>
+    <a href="/home/">
+    <button class="btn" style="margin-top: 3rem; background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;">Start Scoring</button>
+</a>
+</div>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+</body>
+</html>

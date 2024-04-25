@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>COGNI QUEST</title>
+   <!-- FontAwesome-cdn include -->
+   <link rel="stylesheet" href="{% static 'home/ajax/libs/font-awesome/5.15.3/css/all.min.css' %}">
+   <!-- Google fonts include -->
+   <link href="{% static 'home/css2-2?family=Roboto:wght@700&family=Russo+One&display=swap' %}" rel="stylesheet">
+   <!-- Bootstrap-css include -->
+   <link rel="stylesheet" href="{% static 'home/assets/css/bootstrap.min.css' %}">
+   <!-- Animate-css include -->
+   <link rel="stylesheet" href="{% static 'home/assets/css/animate.min.css' %}">
+   <!-- Main-StyleSheet include -->
+   <link rel="stylesheet" href="{% static 'home/assets/css/style.css' %}">
+   <link rel="icon" type="image/png" href="{% static 'home/assets/images/logo/logo_bg.png' %}">
+</head>
+
+<body>
+   <div class="wrapper position-relative">
+      <div class="container-fluid p-0">
+         <div class="row">
+            <div class="col-sm-6">
+               <div class="logo_area ps-5 pt-1">
+                  <a href="/home/">
+                     <img style="height: 120px !important;" src="{% static 'home/assets/images/logo/logo_bg.png' %}" alt="cogni quest logo">
+                  </a>
+               </div>
+            </div>
+            <div class="col-sm-6">
+               <div class="clock_area countdown_timer position-relative float-end pe-5 pt-4">
+                  <a class="btn text-white rounded-pill" href="/logout/">Logout</a>
+
+                  <a class="btn text-white rounded-pill" href="/dashboard/">My Progress</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="container">
+         <form class="multisteps_form" id="wizard" id="answer_form" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="question_id" value="{{ question.id }}">
+
+            <!--------------- Step-1 -------------->
+            <div class="multisteps_form_panel step">
+               <div class="form_content position-relative bg-white">
+                  <div class="video_player">
+                     {% if question.image %}
+                     <img width="300px" height="200px" class="youtube-video mt-3" style="margin-left: 30%;" src="{{question.image.url}}" alt="{{question.question_text}}">
+                     {% endif %}
+                  </div>
+                  <div class="question_title px-5 pt-3">
+                     <h1>{{question.question_text}}</h1>
+                  </div>
+                  <div class="form_items overflow-hidden pt-5 ps-5">
+                     <label for="opt_1" class="step_1 position-relative animate__animated animate__fadeInRight animate_25ms active">
+                        {{question.option1}}
+                        <input id="opt_1" type="radio" name="answer" value="option1">
+                     </label>
+                     <label for="opt_2" class="step_1 position-relative animate__animated animate__fadeInRight animate_50ms mt-2">
+                        {{question.option2}}
+                        <input id="opt_2" type="radio" name="answer" value="option2">
+                     </label>
+                     <label for="opt_3" class="step_1 position-relative animate__animated animate__fadeInRight animate_100ms mt-2">
+                        {{question.option3}}
+                        <input id="opt_3" type="radio" name="answer" value="option3">
+                     </label>
+                     <label for="opt_4" class="step_1 position-relative animate__animated animate__fadeInRight animate_100ms mt-2">
+                        {{question.option4}}
+                        <input id="opt_4" type="radio" name="answer" value="option4">
+                     </label>
+                  </div>
+                  <!-- Reveal button -->
+                  <button type="button" id="submit_answer" class="btn px-3 py-2 mt-4 ms-5 rounded-pill text-white">Next</button>
+                  <h3 class="ms-5 mt-4" style="left: auto; font-family: Georgia, 'Times New Roman', Times, serif; color:rgb(135, 135, 55); font-weight: bolder;text-decoration:wavy; text-shadow: 1cap; text-wrap:pretty;" id="hint_text"></h3> <p style="font-family: cursive; font-size: large;" class="ms-5 mt-1" id="hint"></p>
+
+               </div>
+            </div>
+         </form>
+      </div>
+      <!-- Form-Button -->
+   </button>
+</div>
+<!-- jQuery-js include -->
+<script src="{% static 'home/assets/js/jquery-3.6.0.min.js' %}"></script>
+<!-- Countdown-js include -->
+<script src="{% static 'home/assets/js/countdown.js' %}"></script>
+<!-- Bootstrap-js include -->
+<script src="{% static 'home/assets/js/bootstrap.min.js' %}"></script>
+<!-- jQuery-validate-js include -->
+<script src="{% static 'home/assets/js/jquery.validate.min.js' %}"></script>
+<!-- Custom-js include -->
+<script src="{% static 'home/assets/js/script.js' %}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+      var startTime = Date.now();
+
+    $('#submit_answer').click(function() {
+        var userAnswer = $('input[name="answer"]:checked').val();
+        var questionId = $('#question_id').val();
+        var endtime = Date.now();
+        elapsedTime = endtime - startTime;
+
+        $.ajax({
+            type: 'POST',
+            url: '/check-answer/',
+
+            data: {
+                'answer': userAnswer,
+                'question_id': questionId,
+                'elapsed_time':elapsedTime,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(response) {
+                if (response.result === 'correct') {
+                    // Handle correct answer
+                    window.location.href = '/home/';
+                } else if (response.result === 'incorrect') {
+                    // Handle incorrect answer
+                    var hint = response.hint;
+                    $('#hint_text').text('Hint💡:');
+                    $('#hint').text(hint);
+                }
+            }
+        });
+    });
+});
+</script>
+</body>
+
+</html>

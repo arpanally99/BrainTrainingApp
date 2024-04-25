@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'home/assets/images/logo/logo_bg.png' %}">
+    <title>COGNIQUEST</title>
+</head>
+<body style="margin:0;padding:0">
+
+    <div style="width:100%;min-width:320px;font-family:Helvetica,Arial;font-weight:bold;font-size:24px;background-color:#efefeb">
+      <div style="margin:0 auto;width:100%;max-width:598px;text-align:center;background-color:#242e30">
+        <table style="width:100%;max-width:599px;font-family:Arial;font-size:16px;color:#868686;background-color:#efefeb" cellspacing="0" cellpadding="0" border="0">
+          <tbody>
+            <tr>
+              <td style="padding-top:30px;background-color:#efefeb;width:auto"> </td>
+              <td style="padding-top:30px;background-color:#efefeb;text-align:center;width:75px">
+              </td>
+              <td style="padding-top:30px;height:38px;background-color:#efefeb;width:auto"> </td>
+            </tr>
+          </tbody>
+        </table>
+        <table style="width:100%;max-width:600px;font-family:Arial;font-size:16px;color:#868686;background-color:#242e30;table-layout:fixed" cellspacing="0" cellpadding="0" border="0">
+          <tbody>
+            <tr style="background-color:#242e30">
+              <td style="text-align:center;width:auto;background-color:#242e30"> </td>
+              <td style="height:38px;text-align:center;width:75px;background-color:#242e30">
+                <div>
+                  <img style="vertical-align:top;width:75px;min-height:38px" src="{% static 'home/assets/images/logo/logo_bg.png' %}">
+                </div>
+              </td>
+              <td style="text-align:center;width:auto;background-color:#242e30"> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:0;background-color:#242e30">
+          <div style="width:15%;display:inline-block;vertical-align:top">
+           </div>
+          <div style="display:inline-block;width:70%;vertical-align:top;color:#f7f7f7;text-align:center">
+            <div style="font-size:42px;font-weight:bold;padding-bottom:12px;padding-top:25px">Welcome {% if request.user.is_authenticated %} {{request.user.first_name}} {% endif %}!</div>
+            <hr style="width:80%;border:1px solid #2f6577">
+            <div style="font-size:14px;font-weight:normal;font-family:'Courier New', Courier, monospace;padding-top:12px;padding-bottom:6px">CogniQuest is your go-to app for stimulating puzzles and quizzes designed to enhance cognitive learning. Challenge yourself with a diverse range of brain-teasers and trivia questions to sharpen your mental skills and expand your knowledge base. Engage in an enriching journey of self-improvement and mental agility with CogniQuest!</div>
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tbody>
+                <tr>
+                  <td width="100%" style="padding-top:32px;text-align:center" align="center">
+                    <table width="220px" cellspacing="0" cellpadding="0" style="display:inline-block">
+                      <tbody>
+                        <tr>
+                          <td align="center" width="220px" height="42" bgcolor="#28b777" style="background:#28b777;border-radius:28px;color:#ffffff;display:block; margin-bottom: 10px;">
+                            <a href="/home/" style="color:#ffffff;font-size:14px;font-family:Arial,sans-serif;text-decoration:none;line-height:42px;width:100%;display:inline-block"
+                              target="_blank">START PLAYING</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="width:15%;display:inline-block;vertical-align:top">
+            <img style="width:100%;min-height:auto" src="http://www.uberconference.com/static/img2/emails/announcement_r.gif">
+          </div>
+        </div>
+        <div style="text-align:center">
+        </div>
+
+        <div style="background-color:#fff;padding:30px 50px;font-size:16px;font-weight:normal;color:#868686">
+          <div style="text-align:left;line-height:26px;padding-bottom:20px">
+            
+        CogniQuest was created with the hope that users will not only challenge themselves but also have fun while doing so. 
+        It aims to provide an enjoyable and enriching experience where users can engage in stimulating puzzles and quizzes while enhancing their cognitive abilities. 
+        So, dive in, explore, and have a blast on your journey with CogniQuest!
+          <div style="padding-bottom:30px;text-align:left">Best,</div>
+          <table cellpadding="0" cellspacing="0" style="color:#868686;font-family:Arial;font-size:16px">
+            <tbody>
+              <tr>
+                <td style="padding-right:12px;text-align:left">
+                  <img style="width: 61px; height: 61px; border-radius: 50%;" src="{% static 'dashboard/assets/img/arpan_lama.jpg' %}">
+                </td>
+                <td style="text-align:left">
+                  <div>Arpan Lama</div>
+                  <div style="padding-top:6px">Support:</div>
+                  <div style="padding-top:6px">
+                    <a href="mailto:Arpan4917@gmail.com" style="text-decoration:none;color:#41aad3" target="_blank">Arpan4917@gmail.com</a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <table style="margin:0 auto;width:100%;max-width:600px;font-family:Arial;font-size:16px;color:#868686;background-color:#ffffff" cellspacing="0" cellpadding="0">
+          <tbody>
+            <tr>
+              <td colspan="3" style="padding:40px 0;font-size:12px;font-weight:normal;color:#acacac;line-height:18px;background-color:#efefeb;text-align:center">
+                <div style="padding-bottom:12px;font-size:16px;font-weight:bold">COGNIQUEST</div>
+                <div>
+                    © <script>
+                        document.write(new Date().getFullYear())
+                      </script>, Arpan Lama
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
+
